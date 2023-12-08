@@ -1,1 +1,152 @@
-wtf
+<?php
+ include ("code.php");
+?>
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+
+    <script defer src ="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script defer src ="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script defer src ="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    
+    <script defer src ="script.js"></script>
+
+  </head>
+  <body>
+    <div class ="container">
+      <div class ="row justify-content-center">
+        <div class ="col-md8">
+
+        <?php
+        if(isset($_SESSION['status']) && $_SESSION['status'] != '')
+        {
+
+          ?>
+          <div class="alert alert-success" role="alert">
+            <strong>hey !</strong> <?php echo $_SESSION['status']; ?>
+            <hr>
+          </div>
+          <?php
+          unset ($_SESSION['status']);
+        }
+
+        ?>
+          <div class ="card">
+           <div class ="card-header">
+              <h3>wtf</h3>
+
+              <!-- insert -->
+              <div class ="text-center">
+                  <button type="button" class="btn btn-primary " name="insert" data-bs-toggle="modal" data-bs-target="#insert">Insert</button>
+                  <button type="button" class="btn btn-primary " name="edit" data-bs-toggle="modal" data-bs-target="#insert">Edit</button>
+                  <button type="submit" class="btn btn-primary " name="delete" data-bs-toggle="modal" data-bs-target="#delete">Delete</button>
+              </div>
+                  
+                  <!-- Modal -->
+                  <form action = "code.php" method ="POST">
+                  <div class="modal fade" id="insert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="insert">Insert</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="mb-3">
+                          <label for="" class="form-label">First Name </label>
+                          <input type="text" class="form-control" name="fname" id="fname" placeholder="enter first name">
+                          </div>
+                          <div class="mb-3">
+                          <label for="" class="form-label">Last Name </label>
+                          <input type="text" class="form-control" name="lname" id="lname" placeholder="enter last name">
+                          </div>
+                          <div class="mb-3">
+                          <label for="" class="form-label">Email </label>
+                          <input type="email" class="form-control" name="email" id="email" placeholder="enter email">
+                          </div>
+                          <div class="mb-3">
+                          <label for="" class="form-label">Phone </label>
+                          <input type="tel" class="form-control" id="phone" name="phone" placeholder="enter phone" required>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" name="submit" class="btn btn-primary">Confirm</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </form> 
+           </div>
+         </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+
+    <div class ="container">
+      <div class ="row justify-content-center">
+        <div class ="col-md8">
+        <div class ="card">
+           <div class ="card-header">
+
+                <table  class="table table-hover table-fixed mx-auto" id ="info">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-center"></th>
+                      <th scope="col" class="text-center">Num</th>
+                      <th scope="col" class="text-center">First Name</th>
+                      <th scope="col" class="text-center">Last Name</th>
+                      <th scope="col" class="text-center">Email</th>
+                      <th scope="col" class="text-center">Phone</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <?php 
+                    $con = mysqli_connect("localhost", "root", "", "crud");
+                    $query = "select * from crud";
+                    $result= mysqli_query($con,$query);
+
+                    if(mysqli_num_rows($result) > 0){
+                        foreach($result as $row){
+                            ?>
+                        <tr>
+                            <td class="text-center border border-2"><input type="checkbox"  name="dlt_chkbox[]" value="<?= $row['id']; ?> "></td> 
+                            <td class="text-center border border-2"><?php echo "{$row['id']}";?></td>
+                            <td class="text-center border border-2"><?php echo "{$row['fname']}";?></td>
+                            <td class="text-center border border-2"><?php echo "{$row['lname']}";?></td>
+                            <td class="text-center border border-2"><?php echo "{$row['email']}";?></td>
+                            <td class="text-center border border-2"><?php echo "{$row['phone']}";?></td>
+
+                    </td>
+                        </tr>
+                            <?php 
+                        }
+                    }
+                    else{
+                        ?>
+                        <tr><td colspan="9">no record</td></tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+                </table>
+           </div>
+         </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+  </body>
+</html>
