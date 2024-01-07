@@ -26,4 +26,24 @@ if(isset($_POST['submit'])){
     }
 
 }
+
+if (isset($_POST['view'])){
+    $id = $_POST['user_id'];
+
+    // echo $id;
+    $query = "select * from crud where id = '$id'";
+    $result= mysqli_query($con,$query);
+
+    if(mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_array($result)){
+            echo '<h6>'.$row['id'].'</h6>
+                  <h6>'.$row['fname'].'</h6>
+                  <h6>'.$row['lname'].'</h6>
+                  <h6>'.$row['email'].'</h6>
+                  <h6>'.$row['phone'].'</h6>';
+        }
+}else{
+    echo $result = '<h4> no record found </h4>';
+    }
+}
 ?>

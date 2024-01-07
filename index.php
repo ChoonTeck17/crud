@@ -109,7 +109,7 @@
                       <th scope="col" class="text-center">Phone</th>
 
                     </tr>
-                  </thead>
+       1           </thead>
                   <tbody>
                   <?php 
                     $con = mysqli_connect("localhost", "root", "", "crud");
@@ -117,16 +117,16 @@
                     $result= mysqli_query($con,$query);
 
                     if(mysqli_num_rows($result) > 0){
-                        foreach($result as $row){
-                            ?>
+                      while ($row = mysqli_fetch_array($result)){
+                        ?>
                         <tr>
                             <td class="text-center border border-2 user_id"><?php echo "{$row['id']}";?></td>
                             <td class="text-center border border-2"><?php echo "{$row['fname']}";?></td>
                             <td class="text-center border border-2"><?php echo "{$row['lname']}";?></td>
                             <td class="text-center border border-2"><?php echo "{$row['email']}";?></td>
                             <td class="text-center border border-2"><?php echo "{$row['phone']}";?></td>
-                            <td class="text-center border border-2"><button type="submit" class="btn btn-info btn-sm view_data " name="view">View</button></td>
-                            <td class="text-center border border-2"><button type="submit" class="btn btn-secondary " name="edit">Edit</button></td>
+                            <td class="text-center border border-2"><button type="" class="btn btn-info btn-sm view_data " name="view">View</button></td>
+                            <td class="text-center border border-2"><button type="" class="btn btn-secondary " name="edit">Edit</button></td>
                             <td class="text-center border border-2"><button type="submit" class="btn btn-danger " name="delete">Delete</button></td>
 
                     </td>
@@ -158,9 +158,21 @@
             a.preventDefault();
             var user_id = $(this).closest('tr').find('.user_id').text();
 
-                        console.log(user_id);
+                //console.log(user_id);
 
-          });
+                $.ajax({
+                type: "POST",
+                url: "db.php",
+                data:{
+                      'view': true,
+                      'user_id':user_id,
+                },
+                success: function (response){
+                  console.log(response);
+                }
+              });
+            });
+
       });
 
     </script>
