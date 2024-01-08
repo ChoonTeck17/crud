@@ -42,14 +42,15 @@
            <div class ="card-header">
            <br><h3 class= "text-center">Basic Crud using bootstrap 5.3</h3><br>
 
-              <!-- insert -->
             
                   
-                  <!-- Modal -->
+           <!-- insert -->
                   <form action = "db.php" method ="POST">
+
                       <div class ="text-center">
                          <button type="button" class="btn btn-primary " name="insert" data-bs-toggle="modal" data-bs-target="#insert">Insert</button>
                       </div>
+
                   <div class="modal fade" id="insert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
@@ -88,7 +89,60 @@
         </div>
       </div>
     </div>
-    <br><br>
+    
+    <!-- view modal -->
+                
+
+                  <div class="modal fade" id="view_data" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="view_dataLabel">View</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="view_user_data"></div>
+                          </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+    <!-- edit data  -->
+                 <div class="modal fade" id="edit_data" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="edit_dataLabel">Edit Data</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="mb-3">
+                          <label for="" class="form-label">First Name </label>
+                          <input type="text" class="form-control" name="fname" id="fname1" placeholder="enter first name">
+                          </div>
+                          <div class="mb-3">
+                          <label for="" class="form-label">Last Name </label>
+                          <input type="text" class="form-control" name="lname" id="lname1" placeholder="enter last name">
+                          </div>
+                          <div class="mb-3">
+                          <label for="" class="form-label">Email </label>
+                          <input type="email" class="form-control" name="email" id="email1" placeholder="enter email">
+                          </div>
+                          <div class="mb-3">
+                          <label for="" class="form-label">Phone </label>
+                          <input type="tel" class="form-control" name="phone" id="phone1"  placeholder="enter phone" required>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" name="update" class="btn btn-primary">Confirm</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
     <div class ="container">
       <div class ="row justify-content-center">
@@ -125,9 +179,9 @@
                             <td class="text-center border border-2"><?php echo "{$row['lname']}";?></td>
                             <td class="text-center border border-2"><?php echo "{$row['email']}";?></td>
                             <td class="text-center border border-2"><?php echo "{$row['phone']}";?></td>
-                            <td class="text-center border border-2"><button type="" class="btn btn-info btn-sm view_data " name="view">View</button></td>
-                            <td class="text-center border border-2"><button type="" class="btn btn-secondary " name="edit">Edit</button></td>
-                            <td class="text-center border border-2"><button type="submit" class="btn btn-danger " name="delete">Delete</button></td>
+                            <td class="text-center border border-2"><a class="btn btn-secondary view_data" href="#" role="button">View</a></td>
+                            <td class="text-center border border-2"><a class="btn btn-warning edit_data" href="#" role="button">Edit</a></td>
+                            <td class="text-center border border-2"><a class="btn btn-danger" href="#" role="button">Delete</a></td>
 
                     </td>
                         </tr>
@@ -153,6 +207,7 @@
     ?>
 
     <script>
+      // view data
       $(document).ready(function (){
           $('.view_data').click(function (a) {
             a.preventDefault();
@@ -168,12 +223,49 @@
                       'user_id':user_id,
                 },
                 success: function (response){
-                  console.log(response);
+                  // console.log(response);
+
+                  $('.view_user_data').html(response);
+                  $('#view_data').modal('show');
                 }
               });
             });
 
       });
+      // edit data
+      $(document).ready(function (){
+          $('.edit_data').click(function (a) {
+            a.preventDefault();
+            var user_id = $(this).closest('tr').find('.user_id').text();
+
+                console.log(user_id);
+
+                $.ajax({
+                type: "POST",
+                url: "db.php",
+                data:{
+                      'edit': true,
+                      'user_id':user_id,
+                },
+                success: function (response){
+                  // console.log(response);
+                  $.each(response, function (Key, value){
+
+                  // console.log(value['fname']);
+                  $('#fname1').val(value['fname']);
+                  $('#lname1').val(value['lname']);
+                  $('#email1').val(value['email']);
+                  $('#phone1').val(value['phone']);
+
+              });
+                  $('#edit_data').modal('show');
+
+                }
+                });
+             });
+
+      });
+      
 
     </script>
  </body>

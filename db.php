@@ -6,7 +6,7 @@ if($con){
 }else{
 	echo "Not Connected";
 }
-
+//insert
 if(isset($_POST['submit'])){
     $fname = $_POST['fname'];
     $lname = $_POST['lname'];
@@ -26,7 +26,7 @@ if(isset($_POST['submit'])){
     }
 
 }
-
+//view
 if (isset($_POST['view'])){
     $id = $_POST['user_id'];
 
@@ -36,11 +36,31 @@ if (isset($_POST['view'])){
 
     if(mysqli_num_rows($result) > 0){
         while ($row = mysqli_fetch_array($result)){
-            echo '<h6>'.$row['id'].'</h6>
-                  <h6>'.$row['fname'].'</h6>
-                  <h6>'.$row['lname'].'</h6>
-                  <h6>'.$row['email'].'</h6>
-                  <h6>'.$row['phone'].'</h6>';
+            echo '<h6>User id: '.$row['id'].'</h6>
+                  <h6>First name: '.$row['fname'].'</h6>
+                  <h6>Last name: '.$row['lname'].'</h6>
+                  <h6>Email: '.$row['email'].'</h6>
+                  <h6>Phone: '.$row['phone'].'</h6>';
+        }
+}else{
+    echo $result = '<h4> no record found </h4>';
+    }
+}
+
+//edit
+if (isset($_POST['edit'])){
+    $id = $_POST['user_id'];
+    $arrayresult = [];
+    // echo $id;
+    $query = "select * from crud where id = '$id'";
+    $result= mysqli_query($con,$query);
+
+    if(mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_array($result)){
+
+            array_push($arrayresult, $row);
+            header('content-type: application/json');
+            echo json_encode($arrayresult);
         }
 }else{
     echo $result = '<h4> no record found </h4>';
