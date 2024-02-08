@@ -189,7 +189,7 @@
                       <th scope="col" class="text-center">Phone</th>
                       <th scope="col" class="text-center">Actions</th>
                     </tr>
-                  </thead>
+                  </thead>ssda
                   <tbody>
                   <?php 
                     $con = mysqli_connect("localhost", "root", "", "crud");
