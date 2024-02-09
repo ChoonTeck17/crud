@@ -41,9 +41,14 @@
         }
 
         ?>
+        <br>
+        <br>
+        <br>
+  
+        
           <div class ="card">
            <div class ="card-header">
-           <br><h3 class= "text-center">Basic Crud using bootstrap 5.3</h3><br>
+           <br><h3 class= "text-center">Basic Crud</h3><br>
 
             
                   
@@ -179,7 +184,7 @@
         <div class ="card">
            <div class ="card-header">
            
-                <table class="table table-hover table-fixed mx-auto">
+                <table class="table table-hover table-fixed mx-auto" id="info">
                   <thead>
                     <tr>
                       <th scope="col" class="text-center">#</th>

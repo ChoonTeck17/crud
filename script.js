@@ -1,3 +1,3 @@
-// new DataTable('#info');
+new DataTable('#info');
 
 
